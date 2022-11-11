@@ -1,0 +1,25 @@
+
+// these will all fail.
+//"test12"="is bad too"
+//"test13"
+//="is bad"
+//"test14"
+//=
+//"is bad"
+//"test
+//15"="is bad"
+//"test16" = "is bad
+//across
+//multiple lines"
+//"test17" = "is
+//bad"
+//"test18"    =    "spaced out"
+//"test19"="
+//tricky but bad"
+//"test20"=
+//"just getting
+//silly"
+//"test21" == "bad because its C";
+//"test22"    "bad because theres no equals";
+"test23" = bad start of value";
+
