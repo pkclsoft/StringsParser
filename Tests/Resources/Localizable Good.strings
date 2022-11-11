@@ -26,3 +26,4 @@ silly";
 "but who knows";
 "test10p7" // a comment in the middle
  = "ok with a comment";
+"test11" = "<body color=\"%@\">something</body>";
