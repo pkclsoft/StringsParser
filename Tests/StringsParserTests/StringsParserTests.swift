@@ -9,16 +9,8 @@ final class StringsParserTests: XCTestCase {
         let resourcesDirectory = thisDirectory.deletingLastPathComponent().appendingPathComponent("Resources")
         
         let resourceURL = resourcesDirectory.appendingPathComponent("Localizable \(withName).strings")
-        let path: String
         
-        if #available(macOS 13.0, *) {
-            path = resourceURL.path()
-        } else {
-            // Fallback on earlier versions
-            path = resourceURL.path
-        }
-
-        return path
+        return resourceURL.path
     }
     
     func testValidSyntax() throws {
