@@ -49,6 +49,13 @@ public class StringsParser {
     /// the state of the parsing machine.
     var state : ParseState = .awaitingLeftStart
     
+    struct KnownKey {
+        var key: String
+        var line: Int
+    }
+    
+    var knownKeys : Array<KnownKey> = Array()
+    
     /// Outputs to standard output an Xcode "issue" in the syntax described at:
     ///       https://developer.apple.com/documentation/xcode/running-custom-scripts-during-a-build
     /// - Parameters:
@@ -118,6 +125,8 @@ public class StringsParser {
             
             // grab a copy of each individual line for possible error generation.
             lines = content.split(separator: "\n",omittingEmptySubsequences: false)
+            
+            var currentKey : String = ""
 
             // loop until all characters have been processed in the file.
             for ch in content {
@@ -154,6 +163,7 @@ public class StringsParser {
                             // do we have the beginning of the key?
                             if ch == "\"" {
                                 state = .awaitingLeftEnd
+                                currentKey = ""
                                 lastLeftCol = colNumber
                                 lastLeftLine = lineNumber
                                 
@@ -172,8 +182,21 @@ public class StringsParser {
                             // do we have the closing quote for the key?
                             if ch == "\"" {
                                 state = .awaitingEquals
+                                
+                                let newKey = KnownKey(key: currentKey, line: lineNumber)
+                                
+                                if knownKeys.contains(where: { key in
+                                    return key.key.elementsEqual(newKey.key)
+                                }) {
+                                    outputMessage(path, "warning", "duplicate key", lineNumber, lastLeftCol)
+                                } else {
+                                    knownKeys.append(newKey)
+                                }
+                                
                             } else if ch == "\\" {
                                 state = .ignoreOneCharacter(nextState: state)
+                            } else {
+                                currentKey = currentKey.appending("\(ch)")
                             }
                         case .awaitingEquals:
                             // do we have the equals symbol.

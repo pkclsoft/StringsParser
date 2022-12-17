@@ -1,0 +1,4 @@
+// This file has a duplicate entry which should elicit a warning.
+//
+"aduplicate" = "with a value";
+"aduplicate" = "with another value";

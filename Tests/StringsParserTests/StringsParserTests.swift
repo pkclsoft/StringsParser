@@ -38,4 +38,16 @@ final class StringsParserTests: XCTestCase {
             }
         }
     }
+    
+    func testDuplicateKey() throws {
+        let path = testfile(withName: "Duplicate")
+        
+        if FileManager.default.fileExists(atPath: path) {
+            let parser = StringsParser(fileName: path)
+            
+            XCTAssert(!parser.parse(), "File failed to parse.")
+        } else {
+            XCTAssert(false, "unable to find test file: \(path)")
+        }
+    }
 }
